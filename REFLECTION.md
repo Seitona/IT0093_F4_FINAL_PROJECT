@@ -1,0 +1,5 @@
+# Reflection
+
+Core Data stores Subject, TaskItem, and Note as related objects, so a fetch with an NSPredicate such as `subject == %@` returns exactly one subject's tasks, and a Cascade delete rule removes its tasks and notes automatically. In Mobile Application Development 1, local storage meant writing flat values (for example key-value or file storage) and keeping relationships by hand, which is simpler to start with but harder to query and keep consistent. Passing a live managed object through `prepare(for:sender:)` to the next screen is also different from Intent `putExtra()`/`getStringExtra()`, where only simple values travel and the next screen has to look the data up again by an ID or name. The storyboard's manual segues with identifiers are checked by Xcode at build time, whereas Intent extras are string keys that fail silently or at runtime if they are mistyped. The tradeoff is more setup (a data model, a stack, and `save()` calls), but the app ends up with less duplicated code and its data survives relaunch.
+
+Note: written by the student's AI assistant at the student's request; the student must review and explain it before submission.
