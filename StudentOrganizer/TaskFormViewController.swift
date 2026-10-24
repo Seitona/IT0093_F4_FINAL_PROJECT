@@ -31,10 +31,42 @@ class TaskFormViewController: UIViewController {
             dueDatePicker.date = Date()
         }
 
+        applySoftStyle()
+
         // Tap anywhere on the background to hide the keyboard.
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false   // do not block taps on the other controls
         view.addGestureRecognizer(tap)
+    }
+
+    // MARK: - Soft UI styling
+    private func applySoftStyle() {
+        view.backgroundColor = Theme.background
+        Theme.tintLabels(in: view)
+        Theme.styleField(titleTextField)
+        Theme.styleField(detailsTextField)
+        completedSwitch.onTintColor = Theme.priorityGreen
+        prioritySegmentedControl.backgroundColor = Theme.inset
+        prioritySegmentedControl.addTarget(self, action: #selector(priorityChanged),
+                                           for: .valueChanged)
+        updatePriorityColor()
+    }
+
+    @objc private func priorityChanged() {
+        updatePriorityColor()
+    }
+
+    /// The selected priority segment takes its color (green, yellow, or red),
+    /// matching the dot shown on the task row.
+    private func updatePriorityColor() {
+        let level = Int16(prioritySegmentedControl.selectedSegmentIndex)
+        prioritySegmentedControl.selectedSegmentTintColor = Theme.priorityColor(for: level)
+        // White text is unreadable on yellow, so Medium uses the dark text color.
+        let selectedText: UIColor = level == 1 ? Theme.textPrimary : .white
+        prioritySegmentedControl.setTitleTextAttributes(
+            [.foregroundColor: selectedText], for: .selected)
+        prioritySegmentedControl.setTitleTextAttributes(
+            [.foregroundColor: Theme.textPrimary], for: .normal)
     }
 
     @objc private func dismissKeyboard() {

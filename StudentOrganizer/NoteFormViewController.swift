@@ -20,14 +20,15 @@ class NoteFormViewController: UIViewController, PHPickerViewControllerDelegate {
         super.viewDidLoad()
         title = "New Note"
 
-        // Give the text view a visible border.
-        noteTextView.layer.borderWidth = 1
-        noteTextView.layer.borderColor = UIColor.systemGray4.cgColor
-        noteTextView.layer.cornerRadius = 8
+        // Soft UI: matching surface, recessed text area and photo well.
+        view.backgroundColor = Theme.background
+        Theme.tintLabels(in: view)
+        Theme.styleTextView(noteTextView)
+        Theme.styleImageWell(photoImageView)
 
         // Start with a gray placeholder icon until a photo is chosen.
         photoImageView.image = UIImage(systemName: "photo")
-        photoImageView.tintColor = .systemGray3
+        photoImageView.tintColor = Theme.textSecondary
         photoImageView.contentMode = .center
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))

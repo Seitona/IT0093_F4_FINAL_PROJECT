@@ -12,6 +12,8 @@ class SubjectsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "My Subjects"
+        tableView.backgroundColor = Theme.background
+        tableView.separatorStyle = .none   // rows are separate soft cards instead
     }
 
     // Runs every time the screen appears, so the list is always up to date
@@ -86,6 +88,11 @@ class SubjectsViewController: UITableViewController {
         var content = cell.defaultContentConfiguration()
         content.text = subject.name ?? "Untitled subject"
         content.secondaryText = "\(pendingCount) pending task(s)"
+        content.textProperties.color = Theme.textPrimary
+        content.secondaryTextProperties.color = Theme.textSecondary
+        content.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: 18, leading: 16, bottom: 18, trailing: 8)
+        cell.applySoftCardStyle()
         cell.contentConfiguration = content
         cell.accessoryType = .disclosureIndicator
         return cell

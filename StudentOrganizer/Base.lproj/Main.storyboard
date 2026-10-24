@@ -360,7 +360,7 @@
                                             <constraint firstAttribute="height" constant="200" id="nf-c2"/>
                                         </constraints>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nf-8">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nf-8" customClass="NeumorphicButton" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="439" width="353" height="35"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Choose Photo"/>
                                         <connections>
@@ -423,7 +423,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nd-7">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nd-7" customClass="NeumorphicButton" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="372" width="353" height="28"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Delete Note">
                                             <color key="baseForegroundColor" systemColor="systemRedColor"/>

@@ -14,6 +14,8 @@ class TasksViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = subject?.name
+        tableView.backgroundColor = Theme.background
+        tableView.separatorStyle = .none   // rows are separate soft cards instead
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -64,17 +66,55 @@ class TasksViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell",
                                                  for: indexPath)
         let task = tasks[indexPath.row]
-        let dueText = task.dueDate?.formatted(date: .abbreviated, time: .shortened)
-            ?? "no due date"
+        // Compact format (no year / "at") so the subtitle fits on one line next to the switch.
+        let dueText = task.dueDate?.formatted(
+            .dateTime.month(.abbreviated).day().hour().minute()) ?? "no due date"
 
         var content = cell.defaultContentConfiguration()
-        content.text = task.title ?? "Untitled task"
+        let titleText = task.title ?? "Untitled task"
+        if task.isDone {
+            // Finished tasks are struck through and grayed out so pending work stands out.
+            content.attributedText = NSAttributedString(string: titleText, attributes: [
+                .strikethroughStyle: NSUnderlineStyle.single.rawValue,
+                .foregroundColor: Theme.textSecondary
+            ])
+        } else {
+            content.text = titleText
+            content.textProperties.color = Theme.textPrimary
+        }
         content.secondaryText = "Due \(dueText) - \(priorityName(for: task.priority))"
-        // Finished tasks are grayed out so pending work stands out.
-        content.textProperties.color = task.isDone ? .secondaryLabel : .label
+        content.secondaryTextProperties.color = Theme.textSecondary
+
+        // Colored dot = priority (green Low, yellow Medium, red High).
+        content.image = UIImage(systemName: "circle.fill")
+        content.imageProperties.tintColor = Theme.priorityColor(for: task.priority)
+        content.imageProperties.preferredSymbolConfiguration =
+            UIImage.SymbolConfiguration(pointSize: 14)
+        content.imageToTextPadding = 12
+        content.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: 16, leading: 16, bottom: 16, trailing: 8)
+
+        cell.applySoftCardStyle()
         cell.contentConfiguration = content
-        cell.accessoryType = task.isDone ? .checkmark : .none
+        cell.accessoryType = .none
+        cell.accessoryView = makeCompletedSwitch(for: task)
         return cell
+    }
+
+    /// The "completed" toggle shown on every row, so a task can be finished
+    /// without opening the edit screen. Tapping elsewhere on the row still edits it.
+    private func makeCompletedSwitch(for task: TaskItem) -> UISwitch {
+        let toggle = UISwitch()
+        toggle.isOn = task.isDone
+        toggle.onTintColor = Theme.priorityGreen
+        toggle.addAction(UIAction { [weak self, weak toggle] _ in
+            guard let self = self, let toggle = toggle else { return }
+            task.isDone = toggle.isOn
+            CoreDataStack.shared.save()
+            // Short delay lets the switch finish animating before the row re-sorts.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { self.loadTasks() }
+        }, for: .valueChanged)
+        return toggle
     }
 
     /// Priority is stored as a number in Core Data (0 Low, 1 Medium, 2 High).

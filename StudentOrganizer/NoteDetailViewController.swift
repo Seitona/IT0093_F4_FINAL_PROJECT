@@ -16,6 +16,10 @@ class NoteDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Note"
+        view.backgroundColor = Theme.background
+        Theme.styleImageWell(photoImageView)
+        noteLabel.textColor = Theme.textPrimary
+        dateLabel.textColor = Theme.textSecondary
         guard let note = note else { return }
         noteLabel.text = note.text
         dateLabel.text = note.createdAt?.formatted(date: .long, time: .shortened)

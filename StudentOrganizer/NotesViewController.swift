@@ -11,7 +11,7 @@ class NotesViewController: UIViewController,
     private var notes: [Note] = []
     private let context = CoreDataStack.shared.context
     private let columns: CGFloat = 2    // number of cells per row
-    private let spacing: CGFloat = 12   // gap between cells and around the grid
+    private let spacing: CGFloat = 20   // gap between cells and around the grid (room for soft shadows)
 
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -19,6 +19,8 @@ class NotesViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Notes"
+        view.backgroundColor = Theme.background
+        collectionView.backgroundColor = .clear
         collectionView.dataSource = self
         collectionView.delegate = self
     }
